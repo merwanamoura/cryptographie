@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 import static projet.BW.mot;
 import static projet.MTF.mot;
+import static projet.MTF.motDecompresser;
 
 /**
  *
@@ -17,31 +18,32 @@ import static projet.MTF.mot;
  */
 public class Projet {
     
+    static MTF move;
+    static Huffman huff;
+    static String after_bw="";
+    static String after_mtf="";
     
-    static void burrow_wheeler_compression(){
-        BW.compression();
-    }
+    static String decompression_bw="";
+    static String decompression_mtf="";
     
-    static void burrow_wheeler_decompression(){
-        BW.decompression(BW.code);
-    }
-    
-    static void move_to_front_compression(){
-        MTF.compression();
-    }
-
-    static void move_to_front_decompression(){
-        MTF.decompression(MTF.codeLettre);
-    }
     
     public static void main(String[] args) {
-        /*
-        burrow_wheeler_compression();
-        burrow_wheeler_decompression();
-        */
+              /*  
+        // compression 
+        BW.compression();
+        after_bw = BW.code;
+        move = new MTF(after_bw);
+        move.compression();
+        after_mtf=MTF.codeLettre;
         
-        move_to_front_compression();
-        move_to_front_decompression();
+        //decompression
+        move.decompression(after_mtf);
+        decompression_mtf=MTF.motDecompresser;
+        BW.decompression(decompression_mtf);
+        */
+              
+        huff = new Huffman("TEXXE");
+        huff.compression();
     }
     
     

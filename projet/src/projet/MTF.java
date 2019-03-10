@@ -18,7 +18,9 @@ public class MTF {
     static String mot="";
     static String codeChiffre="";
     static String codeLettre="";
+    static List<String> listeCaractere = new ArrayList<String>();
     static List<String> listeCaractereInit = new ArrayList<String>();
+    static List<String> listeCaractereTriee = new ArrayList<String>();
     static List<String> listeCaractereModif = new ArrayList<String>();
     static List<String> listeLettreMot = new ArrayList<String>();
     static List<Integer> listeCodeMot = new ArrayList<Integer>();
@@ -30,18 +32,48 @@ public class MTF {
     static List<String> listeCaractereModifDecompression = new ArrayList<String>();
     static String motDecompresser="";
     static String motADecompresser="";
+    
+    public MTF(String c){
+        mot = c;
+    }
 
     
-    static void initListeCaractere(){
+    static void initListeCaractere(String m){
         if(listeCaractereInit.size() == 0){
-            listeCaractereInit.add("A");listeCaractereInit.add("B");listeCaractereInit.add("C");listeCaractereInit.add("D");listeCaractereInit.add("E");
-            listeCaractereInit.add("F");listeCaractereInit.add("G");listeCaractereInit.add("H");listeCaractereInit.add("I");listeCaractereInit.add("J");
-            listeCaractereInit.add("K");listeCaractereInit.add("L");listeCaractereInit.add("M");listeCaractereInit.add("N");listeCaractereInit.add("O");
-            listeCaractereInit.add("P");listeCaractereInit.add("Q");listeCaractereInit.add("R");listeCaractereInit.add("S");listeCaractereInit.add("T");
-            listeCaractereInit.add("U");listeCaractereInit.add("V");listeCaractereInit.add("W");listeCaractereInit.add("X");listeCaractereInit.add("Y");
-            listeCaractereInit.add("Z");
+            listeCaractere.add("A");listeCaractere.add("B");listeCaractere.add("C");listeCaractere.add("D");listeCaractere.add("E");
+            listeCaractere.add("F");listeCaractere.add("G");listeCaractere.add("H");listeCaractere.add("I");listeCaractere.add("J");
+            listeCaractere.add("K");listeCaractere.add("L");listeCaractere.add("M");listeCaractere.add("N");listeCaractere.add("O");
+            listeCaractere.add("P");listeCaractere.add("Q");listeCaractere.add("R");listeCaractere.add("S");listeCaractere.add("T");
+            listeCaractere.add("U");listeCaractere.add("V");listeCaractere.add("W");listeCaractere.add("X");listeCaractere.add("Y");
+            listeCaractere.add("Z");
+        }
+        if(listeCaractereTriee.size() == 0){    
+            
+            for(int i = 0 ; i < m.length() ; i++)
+                for(int j = 0 ; j < listeCaractere.size() ; j++) 
+                    if(Character.toString(m.charAt(i)).equals(listeCaractere.get(j)))
+                        if(!isInListe(listeCaractereInit,Character.toString(m.charAt(i))))
+                            listeCaractereInit.add(listeCaractere.get(j));
+            
+            int[] tab = new int[listeCaractereInit.size()];
+            for(int i = 0 ; i < tab.length ; i++) tab[i] = 0;
+            
+            for(int i = 0 ; i < listeCaractereInit.size() ; i++)
+                for(int j = 0 ; j < listeCaractereInit.size() ; j++)
+                    if(j!=i && listeCaractereInit.get(i).compareTo(listeCaractereInit.get(j)) > 0 )  tab[i]++;
+                                   
+            for(int i = 0 ; i < listeCaractereInit.size() ; i++) 
+                for(int j = 0 ; j < tab.length ; j++)
+                    if(tab[j] == i)listeCaractereTriee.add(i,listeCaractereInit.get(j));
         }        
         
+    }
+    
+    static boolean isInListe(List<String> liste, String l){
+        boolean bol = false;
+        for(int i = 0 ; i < liste.size() ; i++)
+            if( liste.get(i).equals(l) ) bol = true;
+        return bol;
     }
     
     static void initListeLettre(){
@@ -66,9 +98,9 @@ public class MTF {
         for(int i = 0 ; i < listeCodeMot.size(); i++) codeChiffre += listeCodeMot.toString();
         
         for(int i = 0 ; i < listeCodeMot.size(); i++) 
-            for(int j = 0 ; j < listeCaractereInit.size(); j++)
+            for(int j = 0 ; j < listeCaractereTriee.size(); j++)
                 if( listeCodeMot.get(i) == j )
-                    listeCodeLettre.add(listeCaractereInit.get(j));
+                    listeCodeLettre.add(listeCaractereTriee.get(j));
         
         for(int i = 0 ; i < listeCodeLettre.size(); i++) codeLettre += listeCodeLettre.get(i);
         
@@ -76,18 +108,24 @@ public class MTF {
     }
     
     static void compression(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir un mot : ");
-        mot += sc.nextLine();
-        initListeCaractere();
-        for(int i = 0 ; i < listeCaractereInit.size() ; i++) listeCaractereModif.add(listeCaractereInit.get(i));
+        if(mot.equals("")){
+           Scanner sc = new Scanner(System.in);
+           System.out.println("Veuillez saisir un mot : ");
+           mot += sc.nextLine();   
+        }
+
+        initListeCaractere(mot.toUpperCase());
+        //for(int i = 0 ; i < listeCaractereTriee.size() ; i++) System.out.println(listeCaractereTriee.get(i));
+        for(int i = 0 ; i < listeCaractereTriee.size() ; i++) listeCaractereModif.add(listeCaractereTriee.get(i));
 
         initListeLettre();
         move_to_front();
-        System.out.println("chiffre codé -----> " + listeCodeMot);
-        System.out.println("tableau codé ------> " + codeLettre);
+        //System.out.println("chiffre codé -----> " + listeCodeMot);
+        System.out.println("Code obtenu après MTF : " + codeLettre);
     }
     
+    /*********************************************************************************************************************/
+    /*********************************************************************************************************************/
     /*********************************************************************************************************************/
     
     static void createListeLettreDepartDecompression(){
@@ -102,10 +140,10 @@ public class MTF {
     
     static void initListeChiffreDecompression(){
         for(int i = 0 ; i < listeLettreDepart.size() ; i++)
-            for(int j = 0 ; j < listeCaractereInit.size() ; j++)
-                if(listeLettreDepart.get(i).equals(listeCaractereInit.get(j))) listeChiffreDecompression.add(j);
+            for(int j = 0 ; j < listeCaractereTriee.size() ; j++)
+                if(listeLettreDepart.get(i).equals(listeCaractereTriee.get(j))) listeChiffreDecompression.add(j);
         
-        System.out.println("liste ------> " + listeChiffreDecompression);
+        //System.out.println("liste ------> " + listeChiffreDecompression);
     }
     
     static void getDecompression(){
@@ -125,12 +163,12 @@ public class MTF {
     
     static void decompression(String str){
         motADecompresser = str;
-        initListeCaractere();
-        for(int i = 0 ; i < listeCaractereInit.size() ; i++) listeCaractereModifDecompression.add(listeCaractereInit.get(i));
+        initListeCaractere(motADecompresser);
+        for(int i = 0 ; i < listeCaractereTriee.size() ; i++) listeCaractereModifDecompression.add(listeCaractereTriee.get(i));
         createListeLettreDepartDecompression();
         initListeChiffreDecompression();
         getDecompression();
-        System.out.println("----->" + motDecompresser);
+        System.out.println("Mot decompresser par MTF : " + motDecompresser);
     }
     
     

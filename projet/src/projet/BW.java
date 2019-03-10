@@ -25,6 +25,7 @@ public class BW {
     static List<String> listeClasse = new ArrayList<String>(); 
     static int chiffre=0;
     static String motDecompresser="";
+    static int sauvegarde;
 
     static void createlisteDepart(){
         for(int i = 0 ; i < liste.size() ; i++){
@@ -69,14 +70,14 @@ public class BW {
     static void getCode(){
         
         for(int i = 0; i<listeTrier.size() ; i++){
-            if(listeTrier.get(i).equals(mot)) code += Integer.toString(i+1);
+            if(listeTrier.get(i).equals(mot)) sauvegarde += i+1;
         }
         
         for(int i = 0; i<listeTrier.size() ; i++){
             String str = listeTrier.get(i);              
             code +=  Character.toString(str.charAt(mot.length() - 1));
         }
-        System.out.println("\ncode --->" + code);
+        System.out.println("\nCode obtenu après BW : " + code.toUpperCase());
 
     }
     
@@ -91,8 +92,7 @@ public class BW {
     }
     
     static void creerListes(String str){
-        chiffre += Integer.parseInt(Character.toString(str.charAt(0)));
-        for(int i = 1 ; i < str.length() ; i++) listeCode.add(Character.toString(str.charAt(i)));
+        for(int i = 0 ; i < str.length() ; i++) listeCode.add(Character.toString(str.charAt(i)));
 
         int[] tab = new int[listeCode.size()];
         
@@ -124,7 +124,7 @@ public class BW {
         //ON MET LA PREMIERE LETTRE DU MOT
         /******************************************************/
         
-        int position = chiffre-1;
+        int position = sauvegarde-1;
         int numeroDansLigneClasse;
         String lettre=listeClasse.get(position);
         motDecompresser += lettre;
@@ -156,7 +156,7 @@ public class BW {
             motDecompresser += lettre;
         }
         
-        System.out.println("mot decompresser : "+motDecompresser);
+        System.out.println("mot decompresser par BW : "+motDecompresser);
         
     }
     
