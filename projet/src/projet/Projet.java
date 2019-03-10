@@ -22,29 +22,40 @@ public class Projet {
     static Huffman huff;
     static String after_bw="";
     static String after_mtf="";
+    static String after_huff="";
     
     static String decompression_bw="";
     static String decompression_mtf="";
+    static String decompression_huff="";
     
     
     public static void main(String[] args) {
-              /*  
+               
         // compression 
         BW.compression();
         after_bw = BW.code;
+        
         move = new MTF(after_bw);
         move.compression();
         after_mtf=MTF.codeLettre;
         
-        //decompression
-        move.decompression(after_mtf);
-        decompression_mtf=MTF.motDecompresser;
-        BW.decompression(decompression_mtf);
-        */
-              
-        huff = new Huffman("TEXXE");
+        huff = new Huffman(after_mtf);
         huff.compression();
-        huff.decompression(huff.motCode);
+        after_huff=huff.motCode;
+        
+        //decompression
+        huff.decompression(after_huff);
+        decompression_huff = huff.motCode;
+        
+        move.decompression(decompression_huff);
+        decompression_mtf=MTF.motDecompresser;
+        
+        BW.decompression(decompression_mtf);
+        
+              
+        
+        
+        
     }
     
     

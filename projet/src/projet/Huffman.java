@@ -153,10 +153,10 @@ public class Huffman {
         
         for(int i = 0 ; i < listeLettreStatistique.size() ; i++) 
             listeCode.add(getCode(n,listeLettreStatistique.get(i),""));
-        
+        /*
         for(int i = 0 ; i < listeLettreStatistique.size() ; i++) 
             System.out.println(listeLettreStatistique.get(i) + " : " + listeCode.get(i));
-        
+        */
         for(int i = 0 ; i < mot.length(); i++) {
             String lettre = Character.toString(mot.charAt(i));
             motCode +=getCode(n,lettre,"");
@@ -172,18 +172,31 @@ public class Huffman {
         for(int i = 0 ; i < code.length() ; i++) listeADecompresser.add(Character.toString(code.charAt(i)));
     }
     
-    static void getLettreFromCode(){
+    static String getLettreFromCode(){
         String code="";
+        String lettre="";
         while(!isInListe(listeCode,code)){
             code += listeADecompresser.get(0);
             listeADecompresser.remove(0);
         }
         
+        for(int i = 0 ; i < listeCode.size() ; i++){
+            if(code.equals(listeCode.get(i))) lettre += listeLettreStatistique.get(i);
+        }
+         
+        return lettre;
+    }
+    
+    static void getCode(){
+        while(listeADecompresser.size() != 0){
+            motDecode += getLettreFromCode();
+        }
     }
     
     static void decompression(String code){
         initListeAdecompresser(code);
-        
+        getCode();
+        System.out.println("mot décompresser après Huffman : " + motDecode);
     }
     
 }
