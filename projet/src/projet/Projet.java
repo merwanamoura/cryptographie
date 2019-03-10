@@ -44,6 +44,7 @@ public class Projet {
               
         huff = new Huffman("TEXXE");
         huff.compression();
+        huff.decompression(huff.motCode);
     }
     
     

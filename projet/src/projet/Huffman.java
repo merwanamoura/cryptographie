@@ -23,8 +23,12 @@ public class Huffman {
     static List<String> listeLettreStatistique = new ArrayList<String>();
     static List<Double> FrequenceStatistique = new ArrayList<Double>();
     static List<Noeud> BdNoeud= new ArrayList<Noeud>();
+    static List<String> listeCode = new ArrayList<String>();
+
     
     static String motCode="";
+    static String motDecode="";
+    static List<String> listeADecompresser = new ArrayList<String>();
     
     public Huffman(String m){
         mot = m;
@@ -148,7 +152,10 @@ public class Huffman {
         Noeud n = BdNoeud.get(0);
         
         for(int i = 0 ; i < listeLettreStatistique.size() ; i++) 
-            System.out.println(listeLettreStatistique.get(i) + " : " + getCode(n,listeLettreStatistique.get(i),""));
+            listeCode.add(getCode(n,listeLettreStatistique.get(i),""));
+        
+        for(int i = 0 ; i < listeLettreStatistique.size() ; i++) 
+            System.out.println(listeLettreStatistique.get(i) + " : " + listeCode.get(i));
         
         for(int i = 0 ; i < mot.length(); i++) {
             String lettre = Character.toString(mot.charAt(i));
@@ -156,13 +163,26 @@ public class Huffman {
         }
         
         System.out.println("Code après Huffman : " + motCode);
+ 
+    }
+    
+    /****************************************************************************************************************/
+    
+    static void initListeAdecompresser(String code){
+        for(int i = 0 ; i < code.length() ; i++) listeADecompresser.add(Character.toString(code.charAt(i)));
+    }
+    
+    static void getLettreFromCode(){
+        String code="";
+        while(!isInListe(listeCode,code)){
+            code += listeADecompresser.get(0);
+            listeADecompresser.remove(0);
+        }
         
-        /*
-        System.out.println(BdNoeud.get(0).affiche()); 
-        System.out.println(BdNoeud.get(0).getFilsGauche().affiche());
-        System.out.println(BdNoeud.get(0).getFilsDroit().affiche());
-        */
-        
+    }
+    
+    static void decompression(String code){
+        initListeAdecompresser(code);
         
     }
     
