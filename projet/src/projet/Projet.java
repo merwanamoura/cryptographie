@@ -28,11 +28,11 @@ public class Projet {
     static String decompression_mtf="";
     static String decompression_huff="";
     
-    
+    /*
     public static void main(String[] args) {
                
         // compression 
-        BW.compression();
+        BW.compression("");
         after_bw = BW.code;
         
         move = new MTF(after_bw);
@@ -52,11 +52,8 @@ public class Projet {
         
         BW.decompression(decompression_mtf);
         
-              
         
-        
-        
-    }
+    }*/
     
     
     

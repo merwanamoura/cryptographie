@@ -15,17 +15,32 @@ import java.util.Scanner;
  */
 public class BW {
     
-    static List<String> liste = new ArrayList<String>();
-    static List<String> listeDepart = new ArrayList<String>();
-    static List<String> listeTrier = new ArrayList<String>(); 
-    static String mot="";
-    static String code="";
+    static List<String> liste;
+    static List<String> listeDepart;
+    static List<String> listeTrier;
+    static String mot;
+    static String code;
     
-    static List<String> listeCode = new ArrayList<String>();
-    static List<String> listeClasse = new ArrayList<String>(); 
-    static int chiffre=0;
-    static String motDecompresser="";
+    static List<String> listeCode;
+    static List<String> listeClasse; 
+    static int chiffre;
+    static String motDecompresser;
     static int sauvegarde;
+    
+    public BW(){
+        liste= new ArrayList<String>();
+        listeDepart = new ArrayList<String>();
+        listeTrier = new ArrayList<String>(); 
+        
+        mot="";
+        code="";
+        
+        listeCode = new ArrayList<String>();
+        listeClasse = new ArrayList<String>();
+        chiffre=0;
+        
+        motDecompresser="";
+    }
 
     static void createlisteDepart(){
         for(int i = 0 ; i < liste.size() ; i++){
@@ -77,18 +92,19 @@ public class BW {
             String str = listeTrier.get(i);              
             code +=  Character.toString(str.charAt(mot.length() - 1));
         }
-        System.out.println("\nCode obtenu après BW : " + code.toUpperCase());
+        //System.out.println("\nCode obtenu après BW : " + code.toUpperCase());
 
     }
     
-    static void  compression(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir un mot : ");
-        mot += sc.nextLine();        
-        initListe(mot);
-        createlisteDepart();        
-        BWT();
-        getCode();
+    static void compression(String str){
+        if(!str.equals("")){
+            mot = str;
+            initListe(mot);
+            createlisteDepart();        
+            BWT();
+            getCode();
+        }
+        
     }
     
     static void creerListes(String str){
@@ -119,7 +135,7 @@ public class BW {
     
     static void decompression(String str){
         creerListes(str);
-        
+
         /******************************************************/
         //ON MET LA PREMIERE LETTRE DU MOT
         /******************************************************/
@@ -156,7 +172,7 @@ public class BW {
             motDecompresser += lettre;
         }
         
-        System.out.println("mot decompresser par BW : "+motDecompresser);
+        //System.out.println("mot decompresser par BW : "+motDecompresser);
         
     }
     
