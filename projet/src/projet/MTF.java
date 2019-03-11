@@ -60,12 +60,9 @@ public class MTF {
     
     static void initListeCaractere(String m){
         if(listeCaractereInit.size() == 0){
-            listeCaractere.add("a");listeCaractere.add("b");listeCaractere.add("c");listeCaractere.add("d");listeCaractere.add("e");
-            listeCaractere.add("f");listeCaractere.add("g");listeCaractere.add("h");listeCaractere.add("i");listeCaractere.add("j");
-            listeCaractere.add("k");listeCaractere.add("l");listeCaractere.add("m");listeCaractere.add("n");listeCaractere.add("o");
-            listeCaractere.add("p");listeCaractere.add("q");listeCaractere.add("r");listeCaractere.add("s");listeCaractere.add("t");
-            listeCaractere.add("u");listeCaractere.add("v");listeCaractere.add("w");listeCaractere.add("x");listeCaractere.add("y");
-            listeCaractere.add("z");
+            for(int i = 0 ; i < m.length() ; i++){
+                if(!isInListe(listeCaractereInit,Character.toString(m.charAt(i)))) listeCaractere.add(Character.toString(m.charAt(i)));
+            }
         }
         if(listeCaractereTriee.size() == 0){    
             
