@@ -26,6 +26,9 @@ public class BW {
     static int chiffre;
     static String motDecompresser;
     static int sauvegarde;
+    static String etapeDecompression;
+
+    
     
     public BW(){
         liste= new ArrayList<String>();
@@ -40,6 +43,8 @@ public class BW {
         chiffre=0;
         
         motDecompresser="";
+        etapeDecompression="";
+        sauvegarde=0;
     }
 
     static void createlisteDepart(){
@@ -92,7 +97,6 @@ public class BW {
             String str = listeTrier.get(i);              
             code +=  Character.toString(str.charAt(mot.length() - 1));
         }
-        //System.out.println("\nCode obtenu après BW : " + code.toUpperCase());
 
     }
     
@@ -145,8 +149,8 @@ public class BW {
         String lettre=listeClasse.get(position);
         motDecompresser += lettre;
         
-        //System.out.println("on part avec le caractere en position : " + position);
-        //System.out.println("lettre depart : " + lettre);
+        etapeDecompression +="On part avec le caractere en position : " + (position + 1);
+        etapeDecompression +="\nLettre depart : " + lettre + "\n";
         
         /*******************************************************/
         
@@ -155,26 +159,36 @@ public class BW {
             for(int i = 0 ; i < listeClasse.size() ; i++)
                 if(lettre.compareTo(listeClasse.get(i)) == 0 && i <= position)  numeroDansLigneClasse++; 
             
-            //System.out.println("ce " + lettre + " est le " + numeroDansLigneClasse + "eme de la ligne classé" );
-            //System.out.println("on cherche donc le " + numeroDansLigneClasse + "eme " + lettre + " de la ligne codee" );
-        
+            etapeDecompression +="\nCe " + lettre + " est le " + numeroDansLigneClasse + "eme de la ligne classé" ;
+            etapeDecompression +="\nOn cherche donc le " + numeroDansLigneClasse + "eme " + lettre + " de la ligne codee";
+
             int cpt=0;
             for(int i = 0 ; i < listeCode.size() ; i++)
                 if(lettre.compareTo(listeCode.get(i)) == 0){
                     cpt++;
                     if(cpt == numeroDansLigneClasse) position = i;
                 }
-
-            //System.out.println("ce qui correspond a la position : " + position);
+            
+            etapeDecompression +="\nCe qui correspond a la position : " + (position + 1) ;
             
             lettre = listeClasse.get(position);
-            //System.out.println("la nouvelle lettre est donc " + lettre);
+            
+            etapeDecompression +="\nLa nouvelle lettre est donc " + lettre;
+            etapeDecompression +="\n";
             motDecompresser += lettre;
         }
         
         //System.out.println("mot decompresser par BW : "+motDecompresser);
         
     }
+
+    public static String getEtapeDecompression() {
+        return etapeDecompression;
+    }
+
+    public static void setEtapeDecompression(String etapeDecompression) {
+        BW.etapeDecompression = etapeDecompression;
+    }
     
-    
+
 }

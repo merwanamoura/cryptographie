@@ -5,8 +5,11 @@
  */
 package projet;
 
+import static projet.BW.listeTrier;
 import static projet.BW.motDecompresser;
-import static projet.Projet.decompression_mtf;
+import static projet.MTF.listeChiffreDecompression;
+import static projet.MTF.listeCodeMot;
+import static projet.MTF.listeLettreMot;
 
 /**
  *
@@ -15,6 +18,8 @@ import static projet.Projet.decompression_mtf;
 public class Interface extends javax.swing.JFrame {
 
     BW bw;
+    MTF mtf;
+    Huffman huff;
     /**
      * Creates new form Interface
      */
@@ -32,6 +37,8 @@ public class Interface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
         panelCentre = new javax.swing.JPanel();
         panelCompression = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -39,7 +46,7 @@ public class Interface extends javax.swing.JFrame {
         labelCompression = new javax.swing.JLabel();
         panelDecompression = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textAreaDecompression = new javax.swing.JTextArea();
         labelDecompression = new javax.swing.JLabel();
         panelNorth = new javax.swing.JPanel();
         zoneTexte = new javax.swing.JPanel();
@@ -61,13 +68,13 @@ public class Interface extends javax.swing.JFrame {
         textAreaDecodageFinal = new javax.swing.JTextArea();
         labeDecodageFinal = new javax.swing.JLabel();
 
+        jScrollPane5.setViewportView(jTree1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelCentre.setLayout(new java.awt.GridLayout(1, 2));
 
         panelCompression.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         textAreaCompression.setColumns(20);
         textAreaCompression.setRows(5);
@@ -84,12 +91,10 @@ public class Interface extends javax.swing.JFrame {
 
         panelDecompression.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setEnabled(false);
-        jScrollPane2.setViewportView(jTextArea1);
+        textAreaDecompression.setColumns(20);
+        textAreaDecompression.setRows(5);
+        textAreaDecompression.setEnabled(false);
+        jScrollPane2.setViewportView(textAreaDecompression);
 
         panelDecompression.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -104,8 +109,6 @@ public class Interface extends javax.swing.JFrame {
         panelNorth.setLayout(new java.awt.GridLayout(1, 2));
 
         zoneTexte.setLayout(new java.awt.BorderLayout());
-
-        srollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         chaineAcoder.setColumns(20);
         chaineAcoder.setRows(5);
@@ -130,12 +133,27 @@ public class Interface extends javax.swing.JFrame {
         zoneBouton.add(buttonBW);
 
         buttonMTF.setText("Move-to-front");
+        buttonMTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMTFActionPerformed(evt);
+            }
+        });
         zoneBouton.add(buttonMTF);
 
         buttonHuffman.setText("Huffman");
+        buttonHuffman.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonHuffmanActionPerformed(evt);
+            }
+        });
         zoneBouton.add(buttonHuffman);
 
         buttonAll.setText("All");
+        buttonAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAllActionPerformed(evt);
+            }
+        });
         zoneBouton.add(buttonAll);
 
         panelNorth.add(zoneBouton);
@@ -145,8 +163,6 @@ public class Interface extends javax.swing.JFrame {
         panelSud.setLayout(new java.awt.GridLayout(1, 2));
 
         panelCodageFinal.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         textAreaCodeFinal.setColumns(20);
         textAreaCodeFinal.setRows(5);
@@ -162,8 +178,6 @@ public class Interface extends javax.swing.JFrame {
         panelSud.add(panelCodageFinal);
 
         panelDecodageFinal.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         textAreaDecodageFinal.setColumns(20);
         textAreaDecodageFinal.setRows(5);
@@ -190,27 +204,195 @@ public class Interface extends javax.swing.JFrame {
             bw = new BW();
             bw.compression(chaine);
             String code = bw.code;
-            textAreaCodeFinal.setText("Code final après Burrows Wheeler : " + code);
+            textAreaCodeFinal.setText(code);
+            textAreaCompression.setText(etapeCompressionBW(bw));
             
             bw.decompression(code);
             String decodage = bw.motDecompresser;
-            textAreaDecodageFinal.setText("Décodafe après Burrows Wheeler : " + decodage);
-            refreshListeBW();
+            textAreaDecodageFinal.setText(decodage);
+            
+            textAreaDecompression.setText(etapeDecompressionBW(bw));
         }
     }//GEN-LAST:event_buttonBWActionPerformed
 
-    void refreshListeBW(){
-        for(int i = 0 ; i < bw.liste.size() ; i++) bw.liste.remove(i);
-        for(int i = 0 ; i < bw.listeDepart.size() ; i++) bw.listeDepart.remove(i);
-        for(int i = 0 ; i < bw.listeTrier.size() ; i++) bw.listeTrier.remove(i);
-        for(int i = 0 ; i < bw.listeCode.size() ; i++) bw.listeCode.remove(i);
-        for(int i = 0 ; i < bw.listeClasse.size() ; i++) bw.listeClasse.remove(i);
-        bw.mot="";
-        bw.code="";
-        bw.chiffre=0;
-        motDecompresser="";
-        bw.sauvegarde=-1;
+    private void buttonMTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMTFActionPerformed
+        // TODO add your handling code here:
+        String chaine = chaineAcoder.getText();
+        if(!chaine.equals("") && !chaine.equals(null)){
+            mtf=new MTF();
+            mtf.compression(chaine);
+            String code=mtf.codeLettre;
+            textAreaCodeFinal.setText(code);
+            
+            mtf.decompression(code);
+            String decodage = mtf.motDecompresser;
+            textAreaDecodageFinal.setText(decodage);
+            
+
+            textAreaCompression.setText(etapeCompressionMTF(mtf));
+            textAreaDecompression.setText(etapeDecompressionMTF(mtf));
+        }
+    }//GEN-LAST:event_buttonMTFActionPerformed
+
+    private void buttonHuffmanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHuffmanActionPerformed
+        // TODO add your handling code here:
+        
+        String chaine = chaineAcoder.getText();
+        if(!chaine.equals("") && !chaine.equals(null)){
+            huff=new Huffman();
+            huff.compression(chaine);
+            String code = huff.motCode;
+            textAreaCodeFinal.setText(code);
+            textAreaCompression.setText(etapeCompressionHuff(huff));
+            
+            huff.decompression(code);
+            String decodage = huff.motDecode;
+            textAreaDecodageFinal.setText(decodage);
+            textAreaDecompression.setText(etapeDecompressionHuff(huff));
+        }
+
+        
+    }//GEN-LAST:event_buttonHuffmanActionPerformed
+
+    private void buttonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAllActionPerformed
+        // TODO add your handling code here:
+        
+        String chaine = chaineAcoder.getText();
+        if(!chaine.equals("") && !chaine.equals(null)){
+            String str="";
+            String str2="";
+            //compression
+            bw = new BW();
+            bw.compression(chaine);
+            String code1 = bw.code;
+            str+="\nCode obtenu après Burrows Wheeler : " + code1 + "\n";
+            
+            mtf=new MTF();
+            mtf.compression(code1);
+            String code2=mtf.codeLettre;
+            str+="Code obtenu après Move-to-Front : " + code2 + "\n";
+            
+            huff=new Huffman();
+            huff.compression(code2);
+            String code3 = huff.motCode;
+            str+="Le code Final est obtenu après Huffman";
+            
+            textAreaCodeFinal.setText(code3);
+            textAreaCompression.setText(str);
+            
+            //decompression
+            huff.decompression(code3);
+            String decodage1 = huff.motDecode;
+            str2+="\nDécodage obtenu après Huffman : " + decodage1 + "\n";
+            
+            mtf.decompression(decodage1);
+            String decodage2 = mtf.motDecompresser;
+            str2+="Décodage obtenu après Move-to-Front : " + decodage2 + "\n";
+            
+            bw.decompression(decodage2);
+            String decodage3 = bw.motDecompresser;
+            str2+="Le décodage Final est obtenu après Burrows Wheeler";
+            
+            textAreaDecodageFinal.setText(decodage3);
+            textAreaDecompression.setText(str2);
+        }
+
+    }//GEN-LAST:event_buttonAllActionPerformed
+
+     String etapeDecompressionHuff(Huffman h){
+        String str="";
+        str += "Il suffit de reperer dans le code\n" ;
+        str +="un caractere parmi la liste presente\n";
+        str +=h.getEtapeDecompression();
+        
+        return str;
     }
+     
+    String etapeCompressionHuff(Huffman h){
+        String str="";
+        str += "Après construction de l'arbre binaire,\n" ;
+        str += "on obtient ces codes pour chaque caractères : \n\n";        
+        str += h.getEtapeCompression();
+ 
+        return str;
+    }
+    String etapeCompressionMTF(MTF m){
+        String str="";
+        str += "Tableau initial des Lettres du mot Triés : \n" ;
+        
+        for(int i=0; i<m.listeCaractereTriee.size();i++) str += i + " "; 
+        str += "\n";
+        for(int i=0; i<m.listeCaractereTriee.size();i++) str += mtf.listeCaractereTriee.get(i) + " ";
+        
+        str += "\n\nEtape du codage : \n\n" ;
+        
+        for(int i=0; i<m.listeCaractereTriee.size();i++) str += i + " ";
+        
+        str+="\n";
+
+        str += m.getEtapeCompression();
+        
+        str+="\n\nCode final : " + mtf.listeCodeMot;
+             
+        return str;
+    }
+    
+    String etapeDecompressionMTF(MTF m){
+        String str="";
+        str += "Le mot à décoder et son tableau codé : \n" ;
+
+        for(int i=0; i<m.listeCodeLettre.size();i++) str += mtf.listeCodeLettre.get(i) + " ";
+        str+="\n";
+        for(int i=0; i<m.listeChiffreDecompression.size();i++) str += mtf.listeChiffreDecompression.get(i) + " ";
+        
+        str += "\n\nEtape du Décodage : \n\n" ;
+        
+        for(int i=0; i<m.listeCaractereTriee.size();i++) str += i + " ";
+        
+        str+="\n";
+
+        str += m.getEtapeDecompression();
+        
+        return str;
+    }
+    
+    String etapeCompressionBW(BW b){
+        String str="";
+        str += "Liste de départ non triée : \n\n" ;
+        for(int i=0; i<b.listeDepart.size();i++) {
+            str += b.listeDepart.get(i) + "\n";
+        }
+        
+        str += "\nListe de départ triée : \n\n" ;
+        
+        for(int i=0; i<b.listeTrier.size();i++) {
+            str += b.listeTrier.get(i) + "\n";
+        }
+        
+        str += "\nLa bonne chaine de caractere se trouve à la position  : " + b.sauvegarde ;
+        
+        return str;
+    }
+    
+    String etapeDecompressionBW(BW b){
+        String str="";
+        str += "Liste codé : \n" ;
+        for(int i=0; i<b.listeCode.size();i++) {
+            str += b.listeCode.get(i) + " ";
+        }
+        
+        str += "\n\nListe classé : \n" ;
+        
+        for(int i=0; i<b.listeClasse.size();i++) {
+            str += b.listeClasse.get(i) + " ";
+        }
+        str+="\n\n";
+        
+        str += bw.getEtapeDecompression();
+        
+        return str;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -258,7 +440,8 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTree jTree1;
     private javax.swing.JLabel labeDecodageFinal;
     private javax.swing.JLabel labelCodeFinal;
     private javax.swing.JLabel labelCompression;
@@ -274,6 +457,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTextArea textAreaCodeFinal;
     private javax.swing.JTextArea textAreaCompression;
     private javax.swing.JTextArea textAreaDecodageFinal;
+    private javax.swing.JTextArea textAreaDecompression;
     private javax.swing.JPanel zoneBouton;
     private javax.swing.JPanel zoneTexte;
     // End of variables declaration//GEN-END:variables

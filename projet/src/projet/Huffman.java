@@ -16,22 +16,39 @@ import static projet.MTF.mot;
  */
 public class Huffman {
     
-    int taille=0;
+    int taille;
     
-    static String mot="";
-    static List<String> listeLettre = new ArrayList<String>();
-    static List<String> listeLettreStatistique = new ArrayList<String>();
-    static List<Double> FrequenceStatistique = new ArrayList<Double>();
-    static List<Noeud> BdNoeud= new ArrayList<Noeud>();
-    static List<String> listeCode = new ArrayList<String>();
+    static String mot;
+    static List<String> listeLettre;
+    static List<String> listeLettreStatistique;
+    static List<Double> FrequenceStatistique;
+    static List<Noeud> BdNoeud;
+    static List<String> listeCode;
 
     
-    static String motCode="";
-    static String motDecode="";
-    static List<String> listeADecompresser = new ArrayList<String>();
+    static String motCode;
+    static String motDecode;
+    static List<String> listeADecompresser;
     
-    public Huffman(String m){
-        mot = m;
+    static String etapeCompression;
+    static String etapeDecompression;
+    
+    public Huffman(){
+        taille=0;
+
+        mot="";
+        listeLettre = new ArrayList<String>();
+        listeLettreStatistique = new ArrayList<String>();
+        FrequenceStatistique = new ArrayList<Double>();
+        BdNoeud= new ArrayList<Noeud>();
+        listeCode = new ArrayList<String>();
+
+
+        motCode="";
+        motDecode="";
+        listeADecompresser = new ArrayList<String>();
+        etapeCompression="";
+        etapeDecompression="";
     }
     
     static void creerListeLettre(){
@@ -87,7 +104,6 @@ public class Huffman {
     }
     
 
-    
     static void huffman(){
         creerNoeud();
 
@@ -138,12 +154,8 @@ public class Huffman {
         }
     }
     
-    static void compression(){
-        if(mot.equals("")){
-           Scanner sc = new Scanner(System.in);
-           System.out.println("Veuillez saisir un mot : ");
-           mot += sc.nextLine();   
-        }
+    static void compression(String m){
+        mot = m;
         
         creerListeLettre();
         creerStatistique();
@@ -153,17 +165,15 @@ public class Huffman {
         
         for(int i = 0 ; i < listeLettreStatistique.size() ; i++) 
             listeCode.add(getCode(n,listeLettreStatistique.get(i),""));
-        /*
+        
         for(int i = 0 ; i < listeLettreStatistique.size() ; i++) 
-            System.out.println(listeLettreStatistique.get(i) + " : " + listeCode.get(i));
-        */
+            etapeCompression += listeLettreStatistique.get(i) + " : " + listeCode.get(i) + "\n";
+        
         for(int i = 0 ; i < mot.length(); i++) {
             String lettre = Character.toString(mot.charAt(i));
             motCode +=getCode(n,lettre,"");
         }
-        
-        System.out.println("Code après Huffman : " + motCode);
- 
+         
     }
     
     /****************************************************************************************************************/
@@ -180,9 +190,13 @@ public class Huffman {
             listeADecompresser.remove(0);
         }
         
+        etapeDecompression += "\nOn repère dans le code " + code;
+        
         for(int i = 0 ; i < listeCode.size() ; i++){
             if(code.equals(listeCode.get(i))) lettre += listeLettreStatistique.get(i);
         }
+        
+        etapeDecompression += "\nCe code correspond à la lettre " + lettre + "\n";
          
         return lettre;
     }
@@ -196,7 +210,24 @@ public class Huffman {
     static void decompression(String code){
         initListeAdecompresser(code);
         getCode();
-        System.out.println("mot décompresser après Huffman : " + motDecode);
     }
+
+    public static String getEtapeCompression() {
+        return etapeCompression;
+    }
+
+    public static void setEtapeCompression(String etapeCompression) {
+        Huffman.etapeCompression = etapeCompression;
+    }
+
+    public static String getEtapeDecompression() {
+        return etapeDecompression;
+    }
+
+    public static void setEtapeDecompression(String etapeDecompression) {
+        Huffman.etapeDecompression = etapeDecompression;
+    }
+    
+    
     
 }

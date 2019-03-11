@@ -15,37 +15,57 @@ import java.util.Scanner;
  */
 public class MTF {
     
-    static String mot="";
-    static String codeChiffre="";
-    static String codeLettre="";
-    static List<String> listeCaractere = new ArrayList<String>();
-    static List<String> listeCaractereInit = new ArrayList<String>();
-    static List<String> listeCaractereTriee = new ArrayList<String>();
-    static List<String> listeCaractereModif = new ArrayList<String>();
-    static List<String> listeLettreMot = new ArrayList<String>();
-    static List<Integer> listeCodeMot = new ArrayList<Integer>();
-    static List<String> listeCodeLettre = new ArrayList<String>();
+    static String mot;
+    static String codeChiffre;
+    static String codeLettre;
+    static List<String> listeCaractere;
+    static List<String> listeCaractereInit;
+    static List<String> listeCaractereTriee;
+    static List<String> listeCaractereModif;
+    static List<String> listeLettreMot;
+    static List<Integer> listeCodeMot;
+    static List<String> listeCodeLettre;
     
-    static List<String> listeLettreDepart = new ArrayList<String>();
-    static List<String> listeLettreDecompression = new ArrayList<String>();
-    static List<Integer> listeChiffreDecompression = new ArrayList<Integer>();
-    static List<String> listeCaractereModifDecompression = new ArrayList<String>();
-    static String motDecompresser="";
-    static String motADecompresser="";
+    static List<String> listeLettreDepart;
+    static List<String> listeLettreDecompression;
+    static List<Integer> listeChiffreDecompression;
+    static List<String> listeCaractereModifDecompression;
+    static String motDecompresser;
+    static String motADecompresser;
     
-    public MTF(String c){
-        mot = c;
+    static String etapeCompression;
+    static String etapeDecompression;
+    
+    public MTF(){
+        mot="";
+        codeChiffre="";
+        codeLettre="";
+        listeCaractere = new ArrayList<String>();
+        listeCaractereInit = new ArrayList<String>();
+        listeCaractereTriee = new ArrayList<String>();
+        listeCaractereModif = new ArrayList<String>();
+        listeLettreMot = new ArrayList<String>();
+        listeCodeMot = new ArrayList<Integer>();
+        listeCodeLettre = new ArrayList<String>();
+
+        listeLettreDepart = new ArrayList<String>();
+        listeLettreDecompression = new ArrayList<String>();
+        listeChiffreDecompression = new ArrayList<Integer>();
+        listeCaractereModifDecompression = new ArrayList<String>();
+        motDecompresser="";
+        motADecompresser="";
+        etapeCompression="";etapeDecompression="";
     }
 
     
     static void initListeCaractere(String m){
         if(listeCaractereInit.size() == 0){
-            listeCaractere.add("A");listeCaractere.add("B");listeCaractere.add("C");listeCaractere.add("D");listeCaractere.add("E");
-            listeCaractere.add("F");listeCaractere.add("G");listeCaractere.add("H");listeCaractere.add("I");listeCaractere.add("J");
-            listeCaractere.add("K");listeCaractere.add("L");listeCaractere.add("M");listeCaractere.add("N");listeCaractere.add("O");
-            listeCaractere.add("P");listeCaractere.add("Q");listeCaractere.add("R");listeCaractere.add("S");listeCaractere.add("T");
-            listeCaractere.add("U");listeCaractere.add("V");listeCaractere.add("W");listeCaractere.add("X");listeCaractere.add("Y");
-            listeCaractere.add("Z");
+            listeCaractere.add("a");listeCaractere.add("b");listeCaractere.add("c");listeCaractere.add("d");listeCaractere.add("e");
+            listeCaractere.add("f");listeCaractere.add("g");listeCaractere.add("h");listeCaractere.add("i");listeCaractere.add("j");
+            listeCaractere.add("k");listeCaractere.add("l");listeCaractere.add("m");listeCaractere.add("n");listeCaractere.add("o");
+            listeCaractere.add("p");listeCaractere.add("q");listeCaractere.add("r");listeCaractere.add("s");listeCaractere.add("t");
+            listeCaractere.add("u");listeCaractere.add("v");listeCaractere.add("w");listeCaractere.add("x");listeCaractere.add("y");
+            listeCaractere.add("z");
         }
         if(listeCaractereTriee.size() == 0){    
             
@@ -77,7 +97,7 @@ public class MTF {
     }
     
     static void initListeLettre(){
-        for(int i = 0 ; i < mot.length() ; i++) listeLettreMot.add( Character.toString( mot.charAt(i) ).toUpperCase() );
+        for(int i = 0 ; i < mot.length() ; i++) listeLettreMot.add( Character.toString( mot.charAt(i) ) );
     }
     
     static void move_to_front(){
@@ -91,6 +111,9 @@ public class MTF {
                     chiffre = j;
                     listeCaractereModif.remove(j);
                     listeCaractereModif.add(0,caractere);
+                    for(int k = 0 ; k < listeCaractereModif.size() ; k++) etapeCompression +=listeCaractereModif.get(k) + " ";
+                    etapeCompression += " - on veut lire le caractere : " + caractere;
+                    etapeCompression += " - position : " + chiffre + "\n";
                     listeCodeMot.add(chiffre);
                 }
             }
@@ -107,21 +130,15 @@ public class MTF {
         
     }
     
-    static void compression(){
-        if(mot.equals("")){
-           Scanner sc = new Scanner(System.in);
-           System.out.println("Veuillez saisir un mot : ");
-           mot += sc.nextLine();   
-        }
+    static void compression(String str){
+        
+        mot = str;
 
-        initListeCaractere(mot.toUpperCase());
-        //for(int i = 0 ; i < listeCaractereTriee.size() ; i++) System.out.println(listeCaractereTriee.get(i));
+        initListeCaractere(mot);
         for(int i = 0 ; i < listeCaractereTriee.size() ; i++) listeCaractereModif.add(listeCaractereTriee.get(i));
 
         initListeLettre();
         move_to_front();
-        //System.out.println("chiffre codé -----> " + listeCodeMot);
-        System.out.println("Code obtenu après MTF : " + codeLettre);
     }
     
     /*********************************************************************************************************************/
@@ -143,7 +160,6 @@ public class MTF {
             for(int j = 0 ; j < listeCaractereTriee.size() ; j++)
                 if(listeLettreDepart.get(i).equals(listeCaractereTriee.get(j))) listeChiffreDecompression.add(j);
         
-        //System.out.println("liste ------> " + listeChiffreDecompression);
     }
     
     static void getDecompression(){
@@ -152,10 +168,15 @@ public class MTF {
             for(int j = 0 ; j < listeCaractereModifDecompression.size() ; j++)
                 if(listeChiffreDecompression.get(i) == j)
                 {
+                    
                     caractere = listeCaractereModifDecompression.get(j);
                     listeCaractereModifDecompression.remove(j);
                     listeCaractereModifDecompression.add(0,caractere);
                     listeLettreDecompression.add(caractere);
+                    
+                    for(int k = 0 ; k < listeCaractereModifDecompression.size() ; k++) etapeDecompression +=listeCaractereModifDecompression.get(k) + " ";
+                    etapeDecompression += " - on veut lire le caractere en position : " + listeChiffreDecompression.get(i);
+                    etapeDecompression += " - il s'agit du : " + caractere + "\n";
                 }
         
         for(int i = 0 ; i < listeLettreDecompression.size(); i++) motDecompresser += listeLettreDecompression.get(i);
@@ -168,7 +189,22 @@ public class MTF {
         createListeLettreDepartDecompression();
         initListeChiffreDecompression();
         getDecompression();
-        System.out.println("Mot decompresser par MTF : " + motDecompresser);
+    }
+
+    public static String getEtapeCompression() {
+        return etapeCompression;
+    }
+
+    public static void setEtapeCompression(String etapeCompression) {
+        MTF.etapeCompression = etapeCompression;
+    }
+
+    public static String getEtapeDecompression() {
+        return etapeDecompression;
+    }
+
+    public static void setEtapeDecompression(String etapeDecompression) {
+        MTF.etapeDecompression = etapeDecompression;
     }
     
     
